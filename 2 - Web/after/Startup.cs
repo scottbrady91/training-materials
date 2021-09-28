@@ -8,6 +8,31 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = "cookie";
+                    options.DefaultChallengeScheme = "oidc";
+                })
+                .AddCookie("cookie")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "https://localhost:5000";
+                    
+                    options.ClientId = "web";
+                    options.ClientSecret = "web_secret";
+                    
+                    options.Scope.Add("weather_api");
+                    options.Scope.Add("weather_api.read");
+
+                    options.CallbackPath = "/signin-oidc";
+                    options.ResponseType = "code";
+                    options.ResponseMode = "query";
+                    options.UsePkce = true;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+                    options.SignedOutCallbackPath = "/signedout";
+                });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -19,6 +44,7 @@ namespace Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

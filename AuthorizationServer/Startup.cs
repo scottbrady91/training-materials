@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Duende.IdentityServer.Models;
+using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,13 +19,15 @@ namespace AuthorizationServer
                 .AddInMemoryIdentityResources(new List<IdentityResource>
                 {
                     new IdentityResources.OpenId(), new IdentityResources.Profile(), new IdentityResources.Email(), new IdentityResources.Phone()
-                });
+                })
+                .AddTestUsers(TestUsers.Users);
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
 
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseIdentityServer();
