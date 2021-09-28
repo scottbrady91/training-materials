@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Validation;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +22,8 @@ namespace AuthorizationServer
                 {
                     new IdentityResources.OpenId(), new IdentityResources.Profile(), new IdentityResources.Email(), new IdentityResources.Phone()
                 })
-                .AddTestUsers(TestUsers.Users);
+                .AddTestUsers(TestUsers.Users)
+                .AddRedirectUriValidator<NoopRedirectValidator>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -67,5 +70,12 @@ namespace AuthorizationServer
             new ApiScope("weather_api"),
             new ApiScope("weather_api.read")
         };
+    }
+
+    // NEVER USE IN PRODUCTION - DEMO ONLY
+    public class NoopRedirectValidator : IRedirectUriValidator
+    {
+        public Task<bool> IsRedirectUriValidAsync(string requestedUri, Client client) => Task.FromResult(true);
+        public Task<bool> IsPostLogoutRedirectUriValidAsync(string requestedUri, Client client) => Task.FromResult(true);
     }
 }
