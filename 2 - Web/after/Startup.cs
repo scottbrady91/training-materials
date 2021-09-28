@@ -17,7 +17,7 @@ namespace Web
                 .AddCookie("cookie")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://localhost:5000";
+                    options.Authority = "https://identity-training.azurewebsites.net";
                     
                     options.ClientId = "web";
                     options.ClientSecret = "web_secret";

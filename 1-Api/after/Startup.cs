@@ -17,7 +17,7 @@ namespace Api
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://localhost:5000";
+                    options.Authority = "https://identity-training.azurewebsites.net";
                     options.Audience = "weather_api";
                 });
         }
