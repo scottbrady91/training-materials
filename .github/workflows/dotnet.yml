@@ -18,9 +18,9 @@ jobs:
       with:
         dotnet-version: 3.1.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore AuthorizationServer/AuthorizationServer.csproj
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build AuthorizationServer/AuthorizationServer.csproj --no-restore
     - name: Publish
       run: dotnet publish AuthorizationServer/AuthorizationServer.csproj -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/auth' --self-contained true  --runtime win-x86
     - name: 'Run Azure webapp deploy action using publish profile credentials'
